@@ -1,8 +1,10 @@
 package com.example.stopwatchapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
@@ -62,9 +64,6 @@ public class StopwatchActivity extends AppCompatActivity {
     private void disableStopwatch(){
         isRunning = false;
     }
-     private void settingsClicked(View view){
-        //TODO
-     }
 
     public void toggleClicked(View view) {
         if (!isRunning) {
@@ -73,6 +72,23 @@ public class StopwatchActivity extends AppCompatActivity {
         }else {
             disableStopwatch();
             toggle.setText(isRunning ? "stop" : "start");
+        }
+    }
+    public void settingsClicked(View view) {
+        Intent intent = new Intent();
+        startActivityForResult(intent, SettingsActivity.SETTINGS_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SettingsActivity.SETTINGS_REQUEST) {
+            if (resultCode == Result_OK) {
+                if (data != null) {
+                    speed = data.getIntExtra("speed", 1000);
+                }
+            }
         }
     }
 }
